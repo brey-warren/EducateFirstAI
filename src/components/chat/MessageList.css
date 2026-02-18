@@ -1,0 +1,108 @@
+.message-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 1rem;
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 80%;
+  border: 1px solid #e9ecef;
+}
+
+.loading-text {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
+/* Scrollbar styling */
+.message-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Firefox scrollbar */
+.message-list {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .messages-container {
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .loading-message {
+    padding: 0.75rem;
+    max-width: 90%;
+  }
+
+  .loading-text {
+    font-size: 0.8125rem;
+  }
+
+  /* Hide scrollbar on mobile for cleaner look */
+  .message-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .message-list {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Tablet responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .loading-message {
+    max-width: 85%;
+  }
+}
+
+/* Focus management for accessibility */
+.message-list:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .loading-message {
+    border: 2px solid #000;
+  }
+
+  .message-list::-webkit-scrollbar-thumb {
+    background: #000;
+  }
+}

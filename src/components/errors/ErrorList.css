@@ -1,0 +1,180 @@
+.error-list {
+  background-color: var(--bg-primary, #ffffff);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color, #e9ecef);
+}
+
+.error-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color, #e9ecef);
+}
+
+.error-list-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #212529);
+}
+
+.error-list-summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.error-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.error-count.critical {
+  background-color: #fff5f5;
+  color: #dc3545;
+  border: 1px solid #f5c6cb;
+}
+
+.error-count.warning {
+  background-color: #fffbf0;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.error-list-content {
+  margin: 0 -4px; /* Compensate for ErrorWarning margins */
+}
+
+.error-list-toggle {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: var(--bg-secondary, #f8f9fa);
+  border: 1px solid var(--border-color, #e9ecef);
+  border-radius: 8px;
+  color: var(--primary-color, #007bff);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-list-toggle:hover {
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.error-list-toggle:focus {
+  outline: 2px solid var(--primary-color, #007bff);
+  outline-offset: 2px;
+}
+
+.error-list-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color, #e9ecef);
+}
+
+.error-list-note {
+  margin: 0;
+  padding: 12px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #856404;
+}
+
+.error-list-note strong {
+  color: #533f03;
+}
+
+/* Empty state */
+.error-list:empty {
+  display: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .error-list {
+    padding: 16px;
+    margin: 12px 0;
+  }
+  
+  .error-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .error-list-title {
+    font-size: 16px;
+  }
+  
+  .error-list-summary {
+    align-self: stretch;
+    justify-content: flex-start;
+  }
+  
+  .error-count {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+/* Animation for new errors */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-list-content > * {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .error-list-toggle,
+  .error-list-content > * {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .error-list {
+    border: 2px solid #000;
+  }
+  
+  .error-count.critical {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+  }
+  
+  .error-count.warning {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+  }
+}
