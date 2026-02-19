@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TranslationKey } from '../translations';
 
 interface Deadline {
   name: string;
@@ -8,7 +9,7 @@ interface Deadline {
 }
 
 interface DeadlineCountdownProps {
-  t: (key: string) => string;
+  t: (key: TranslationKey) => string;
 }
 
 const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({ t }) => {

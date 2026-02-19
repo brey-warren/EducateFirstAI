@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { TranslationKey } from '../translations';
 
 interface ChatSession {
   sessionId: string;
@@ -17,6 +18,7 @@ interface ChatHistorySidebarProps {
   onNewChat: () => void;
   onDeleteSession: (sessionId: string) => void;
   onRenameSession: (sessionId: string, newTitle: string) => void;
+  t: (key: TranslationKey) => string;
 }
 
 const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
@@ -28,6 +30,7 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
   onNewChat,
   onDeleteSession,
   onRenameSession,
+  t,
 }) => {
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -95,22 +98,22 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
       <div style={styles.overlay} onClick={onClose} />
       <div style={styles.sidebar} onClick={(e) => e.stopPropagation()}>
         <div style={styles.header}>
-          <h2 style={styles.title}>💬 Chat History</h2>
+          <h2 style={styles.title}>💬 {t('chatHistory')}</h2>
           <button onClick={onClose} style={styles.closeButton}>
             ✕
           </button>
         </div>
 
         <button onClick={() => { onNewChat(); }} style={styles.newChatButton}>
-          ✨ New Conversation
+          ✨ {t('newConversation')}
         </button>
 
         <div style={styles.sessionList}>
           {sessions.length === 0 ? (
             <div style={styles.emptyState}>
               <span style={styles.emptyIcon}>📭</span>
-              <p style={styles.emptyText}>No chat history yet</p>
-              <p style={styles.emptySubtext}>Start a conversation to see it here</p>
+              <p style={styles.emptyText}>{t('noChatHistory')}</p>
+              <p style={styles.emptySubtext}>{t('startConversation')}</p>
             </div>
           ) : (
             sessions.map((session) => (
@@ -179,7 +182,7 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                           handleRename(session.sessionId, session.title);
                         }}
                       >
-                        ✏️ Rename
+                        ✏️ {t('rename')}
                       </button>
                       <button
                         style={{
@@ -192,7 +195,7 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                           handleDelete(session.sessionId);
                         }}
                       >
-                        {deleteConfirm === session.sessionId ? '⚠️ Click to confirm' : '🗑️ Delete'}
+                        {deleteConfirm === session.sessionId ? `⚠️ ${t('yesDelete')}` : `🗑️ ${t('delete')}`}
                       </button>
                     </div>
                   )}

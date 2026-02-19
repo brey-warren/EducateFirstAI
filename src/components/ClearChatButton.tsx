@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import { TranslationKey } from '../translations';
 
 interface ClearChatButtonProps {
   onClear: () => void;
   disabled: boolean;
+  t: (key: TranslationKey) => string;
 }
 
-const ClearChatButton: React.FC<ClearChatButtonProps> = ({ onClear, disabled }) => {
+const ClearChatButton: React.FC<ClearChatButtonProps> = ({ onClear, disabled, t }) => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleClear = () => {
@@ -23,17 +25,17 @@ const ClearChatButton: React.FC<ClearChatButtonProps> = ({ onClear, disabled }) 
           style={styles.clearButton}
           title="Clear conversation"
         >
-          🗑️ Clear Chat
+          🗑️ {t('clearChat')}
         </button>
       ) : (
         <div style={styles.confirmBox}>
-          <span style={styles.confirmText}>Delete this conversation?</span>
+          <span style={styles.confirmText}>{t('deleteConfirm')}</span>
           <div style={styles.confirmButtons}>
             <button onClick={handleClear} style={styles.confirmYes}>
-              Yes, delete
+              {t('yesDelete')}
             </button>
             <button onClick={() => setShowConfirm(false)} style={styles.confirmNo}>
-              Cancel
+              {t('cancel')}
             </button>
           </div>
         </div>
