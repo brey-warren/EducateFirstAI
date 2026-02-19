@@ -34,28 +34,44 @@ const EducateFirstAI: React.FC = () => {
     { icon: '💰', text: 'How much aid can I get?' },
   ];
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputValue.trim()) return;
 
-    const newMessage = {
+    const userMessage = inputValue;
+    
+    setMessages(prev => [...prev, {
       type: 'user',
-      content: inputValue,
+      content: userMessage,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages(prev => [...prev, newMessage]);
+    }]);
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      setIsTyping(false);
+    try {
+      const response = await fetch('https://5w6rnkjhw7bwc7dw55mjhjche40rirbx.lambda-url.us-east-2.on.aws/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await response.json();
+      
       setMessages(prev => [...prev, {
         type: 'assistant',
-        content: "Great question! I'm here to help you with FAFSA. This is a demo response - once connected to Amazon Bedrock, I'll provide detailed, accurate guidance based on official StudentAid.gov information. Feel free to ask me anything about financial aid!",
+        content: data.message,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
-    }, 1500);
+    } catch (error) {
+      setMessages(prev => [...prev, {
+        type: 'assistant',
+        content: "Sorry, I couldn't connect. Please try again.",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleQuickQuestion = (question: string) => {
