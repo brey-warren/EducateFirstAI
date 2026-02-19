@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { getCurrentUser, signOut, fetchUserAttributes } from 'aws-amplify/auth';
 import SignInModal from './components/SignInModal';
 import DeadlineCountdown from './components/DeadlineCountdown';
 import DarkModeToggle from './components/DarkModeToggle';
 import ClearChatButton from './components/ClearChatButton';
 import ChatHistorySidebar from './components/ChatHistorySidebar';
+import VoiceInput from './components/VoiceInput';
+import TypingMessage from './components/TypingMessage';
 import './components/SignInModal.css';
 import './App.css';
 
@@ -31,6 +34,7 @@ const EducateFirstAI: React.FC = () => {
   }>>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [typingMessageId, setTypingMessageId] = useState<number | null>(null);
 
   const generateChatTitle = (message: string): string => {
     // Define patterns and their replacements
@@ -81,6 +85,33 @@ const EducateFirstAI: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    const checkAuthState = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          setIsGuest(false);
+          
+          // Fetch user attributes to get their name
+          try {
+            const attributes = await fetchUserAttributes();
+            const displayName = attributes.name || 
+                               attributes.email?.split('@')[0] || 
+                               'User';
+            setUserName(displayName);
+          } catch {
+            // Fallback to email from login
+            setUserName(user.signInDetails?.loginId?.split('@')[0] || 'User');
+          }
+        }
+      } catch (error) {
+        // Not signed in
+        setIsGuest(true);
+      }
+    };
+    checkAuthState();
+  }, []);
+
   const quickQuestions = [
     { icon: '📋', text: 'What documents do I need for FAFSA?' },
     { icon: '📅', text: 'When is the FAFSA deadline?' },
@@ -111,6 +142,8 @@ const EducateFirstAI: React.FC = () => {
       });
 
       const data = await response.json();
+      
+      setTypingMessageId(messages.length + 1);
       
       setMessages(prev => [...prev, {
         type: 'assistant',
@@ -152,7 +185,12 @@ const EducateFirstAI: React.FC = () => {
     }
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.log('Error signing out:', error);
+    }
     setIsGuest(true);
     setUserName('');
     setMessages([]);
@@ -902,7 +940,16 @@ const EducateFirstAI: React.FC = () => {
                       <div className="assistant-avatar">🎓</div>
                     )}
                     <div className={`message-bubble ${msg.type}`}>
-                      <p className="message-text">{msg.content}</p>
+                      <p className="message-text">
+                        {msg.type === 'assistant' && index === messages.length - 1 && typingMessageId !== null ? (
+                          <TypingMessage 
+                            content={msg.content} 
+                            onComplete={() => setTypingMessageId(null)}
+                          />
+                        ) : (
+                          msg.content
+                        )}
+                      </p>
                       <span className="message-time">{msg.time}</span>
                     </div>
                   </div>
@@ -932,6 +979,10 @@ const EducateFirstAI: React.FC = () => {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
                 rows={1}
+              />
+              <VoiceInput 
+                onTranscript={(text) => setInputValue(text)} 
+                disabled={isTyping}
               />
               <button
                 className="send-button"
