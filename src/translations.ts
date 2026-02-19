@@ -50,6 +50,12 @@ export const translations = {
     federalDeadline: "Federal Deadline",
     californiaDeadline: "California",
     
+    // Checklist
+    fafsaChecklist: "FAFSA Checklist",
+    trackProgress: "Track your application progress",
+    complete: "Complete",
+    resetProgress: "Reset Progress",
+    
     // Sign in modal
     welcomeBack: "Welcome Back",
     createAccount: "Create Account",
@@ -118,6 +124,12 @@ export const translations = {
     priorityDeadline: "Fecha Límite Prioritaria",
     federalDeadline: "Fecha Límite Federal",
     californiaDeadline: "California",
+    
+    // Checklist
+    fafsaChecklist: "Lista de FAFSA",
+    trackProgress: "Sigue el progreso de tu solicitud",
+    complete: "Completado",
+    resetProgress: "Reiniciar Progreso",
     
     // Sign in modal
     welcomeBack: "Bienvenido",
@@ -188,6 +200,12 @@ export const translations = {
     federalDeadline: "联邦截止日期",
     californiaDeadline: "加利福尼亚",
     
+    // Checklist
+    fafsaChecklist: "FAFSA清单",
+    trackProgress: "跟踪您的申请进度",
+    complete: "完成",
+    resetProgress: "重置进度",
+    
     // Sign in modal
     welcomeBack: "欢迎回来",
     createAccount: "创建账户",
@@ -256,6 +274,12 @@ export const translations = {
     priorityDeadline: "Hạn Chót Ưu Tiên",
     federalDeadline: "Hạn Chót Liên Bang",
     californiaDeadline: "California",
+    
+    // Checklist
+    fafsaChecklist: "Danh sách FAFSA",
+    trackProgress: "Theo dõi tiến trình đơn của bạn",
+    complete: "Hoàn thành",
+    resetProgress: "Đặt lại Tiến trình",
     
     // Sign in modal
     welcomeBack: "Chào mừng trở lại",
@@ -326,6 +350,12 @@ export const translations = {
     federalDeadline: "연방 마감일",
     californiaDeadline: "캘리포니아",
     
+    // Checklist
+    fafsaChecklist: "FAFSA 체크리스트",
+    trackProgress: "신청 진행 상황 추적",
+    complete: "완료",
+    resetProgress: "진행 상황 초기화",
+    
     // Sign in modal
     welcomeBack: "다시 오신 것을 환영합니다",
     createAccount: "계정 만들기",
@@ -394,6 +424,12 @@ export const translations = {
     priorityDeadline: "Date Limite Prioritaire",
     federalDeadline: "Date Limite Fédérale",
     californiaDeadline: "Californie",
+    
+    // Checklist
+    fafsaChecklist: "Liste FAFSA",
+    trackProgress: "Suivez la progression de votre demande",
+    complete: "Terminé",
+    resetProgress: "Réinitialiser la Progression",
     
     // Sign in modal
     welcomeBack: "Bon Retour",

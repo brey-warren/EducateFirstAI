@@ -8,6 +8,7 @@ import ChatHistorySidebar from './components/ChatHistorySidebar';
 import VoiceInput from './components/VoiceInput';
 import TypingMessage from './components/TypingMessage';
 import LanguageSelector from './components/LanguageSelector';
+import FAFSAChecklist from './components/FAFSAChecklist';
 import { useTranslation } from './hooks/useTranslation';
 import './components/SignInModal.css';
 import './App.css';
@@ -39,6 +40,7 @@ const EducateFirstAI: React.FC = () => {
   const [typingMessageId, setTypingMessageId] = useState<number | null>(null);
   const [language, setLanguage] = useState('en');
   const { t } = useTranslation(language as any);
+  const [showChecklist, setShowChecklist] = useState(false);
 
   const generateChatTitle = (message: string): string => {
     // Define patterns and their replacements
@@ -794,6 +796,24 @@ const EducateFirstAI: React.FC = () => {
                 onLanguageChange={setLanguage} 
               />
               <button 
+                onClick={() => setShowChecklist(true)} 
+                style={{
+                  background: 'rgba(255,255,255,0.15)', 
+                  border: '1px solid rgba(255,255,255,0.3)', 
+                  borderRadius: '12px', 
+                  padding: '10px 14px', 
+                  cursor: 'pointer', 
+                  fontSize: '18px',
+                  transition: 'all 0.2s ease',
+                }}
+                title="FAFSA Checklist"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <path d="M9 11l3 3L22 4"/>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+              </button>
+              <button 
                 onClick={() => setShowHistory(true)} 
                 style={{
                   background: 'rgba(255,255,255,0.15)', 
@@ -806,7 +826,9 @@ const EducateFirstAI: React.FC = () => {
                 }}
                 title="Chat history"
               >
-                📜
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
               </button>
               <DarkModeToggle />
               {isGuest ? (
@@ -1049,6 +1071,12 @@ const EducateFirstAI: React.FC = () => {
             setChatSessions(prev => prev.map(s => s.sessionId === id ? { ...s, title: newTitle } : s));
           }}
           t={t}
+        />
+
+        <FAFSAChecklist
+          t={t}
+          isOpen={showChecklist}
+          onClose={() => setShowChecklist(false)}
         />
       </div>
     </>
