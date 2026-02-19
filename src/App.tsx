@@ -7,6 +7,8 @@ import ClearChatButton from './components/ClearChatButton';
 import ChatHistorySidebar from './components/ChatHistorySidebar';
 import VoiceInput from './components/VoiceInput';
 import TypingMessage from './components/TypingMessage';
+import LanguageSelector from './components/LanguageSelector';
+import { useTranslation } from './hooks/useTranslation';
 import './components/SignInModal.css';
 import './App.css';
 
@@ -35,6 +37,8 @@ const EducateFirstAI: React.FC = () => {
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [typingMessageId, setTypingMessageId] = useState<number | null>(null);
+  const [language, setLanguage] = useState('en');
+  const { t } = useTranslation(language as any);
 
   const generateChatTitle = (message: string): string => {
     // Define patterns and their replacements
@@ -113,10 +117,10 @@ const EducateFirstAI: React.FC = () => {
   }, []);
 
   const quickQuestions = [
-    { icon: '📋', text: 'What documents do I need for FAFSA?' },
-    { icon: '📅', text: 'When is the FAFSA deadline?' },
-    { icon: '👨‍👩‍👧', text: 'My parents are divorced - what do I do?' },
-    { icon: '💰', text: 'How much aid can I get?' },
+    { icon: '📋', text: t('whatDocuments') },
+    { icon: '📅', text: t('whenDeadline') },
+    { icon: '👨‍👩‍👧', text: t('parentsDivorced') },
+    { icon: '💰', text: t('howMuchAid') },
   ];
 
   const handleSend = async () => {
@@ -138,7 +142,7 @@ const EducateFirstAI: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: userMessage, language: language }),
       });
 
       const data = await response.json();
@@ -777,14 +781,18 @@ const EducateFirstAI: React.FC = () => {
               <div className="logo-icon">🎓</div>
               <div>
                 <div className="logo-text">EducateFirstAI</div>
-                <div className="tagline">Your friendly FAFSA guide</div>
+                <div className="tagline">{t('subtitle')}</div>
               </div>
             </div>
             <div className="header-actions">
               <div className="status-badge">
                 <span className="status-dot" />
-                <span>{isGuest ? 'Guest Mode' : `Hi, ${userName}!`}</span>
+                <span>{isGuest ? 'Guest Mode' : `${t('welcome')}, ${userName}!`}</span>
               </div>
+              <LanguageSelector 
+                currentLanguage={language} 
+                onLanguageChange={setLanguage} 
+              />
               <button 
                 onClick={() => setShowHistory(true)} 
                 style={{
@@ -806,14 +814,14 @@ const EducateFirstAI: React.FC = () => {
                   className="sign-in-button"
                   onClick={() => setShowSignInModal(true)}
                 >
-                  Sign In
+                  {t('signIn')}
                 </button>
               ) : (
                 <button 
                   className="sign-out-button"
                   onClick={handleSignOut}
                 >
-                  Sign Out
+                  {t('signOut')}
                 </button>
               )}
             </div>
@@ -830,39 +838,38 @@ const EducateFirstAI: React.FC = () => {
                     <div className="welcome-icon">👋</div>
                     <h1 className="welcome-title">
                       {isGuest ? (
-                        "Hi there! I'm your FAFSA Assistant"
+                        t('welcomeTitle')
                       ) : (
                         <>
-                          Welcome back, <span className="welcome-user">{userName}</span>!
+                          {t('welcome')}, <span className="welcome-user">{userName}</span>!
                         </>
                       )}
                     </h1>
                     <p className="welcome-text">
-                      I'm here to help you navigate the FAFSA process step by step. 
-                      No question is too simple — I explain everything in plain English!
+                      {t('welcomeText')}
                     </p>
 
                     <div className="stats-bar">
                       <div className="stat-item">
                         <span className="stat-number">$3B+</span>
-                        <span className="stat-label">Aid left unclaimed yearly</span>
+                        <span className="stat-label">{t('aidUnclaimed')}</span>
                       </div>
                       <div className="stat-divider" />
                       <div className="stat-item">
                         <span className="stat-number">10K+</span>
-                        <span className="stat-label">Students helped</span>
+                        <span className="stat-label">{t('studentsHelped')}</span>
                       </div>
                       <div className="stat-divider" />
                       <div className="stat-item">
                         <span className="stat-number">24/7</span>
-                        <span className="stat-label">Always available</span>
+                        <span className="stat-label">{t('alwaysAvailable')}</span>
                       </div>
                     </div>
 
-                    <DeadlineCountdown />
+                    <DeadlineCountdown t={t} />
 
                     <div className="quick-questions-section">
-                      <p className="quick-questions-label">Popular questions to get started:</p>
+                      <p className="quick-questions-label">{t('quickQuestionsLabel')}</p>
                       <div className="quick-questions-grid">
                         {quickQuestions.map((q, index) => (
                           <button
@@ -881,12 +888,12 @@ const EducateFirstAI: React.FC = () => {
                   // Returning user with chat history - show simple prompt
                   <>
                     <div style={{ fontSize: '64px', marginBottom: '24px' }}>💬</div>
-                    <h1 className="welcome-title">Start a New Conversation</h1>
+                    <h1 className="welcome-title">{t('newChatTitle')}</h1>
                     <p className="welcome-text" style={{ marginBottom: '32px' }}>
-                      Ask me anything about FAFSA, financial aid, or college funding!
+                      {t('newChatText')}
                     </p>
                     <div className="quick-questions-section">
-                      <p className="quick-questions-label">Or try one of these:</p>
+                      <p className="quick-questions-label">{t('tryOneOfThese')}</p>
                       <div className="quick-questions-grid">
                         {quickQuestions.map((q, index) => (
                           <button
@@ -918,7 +925,7 @@ const EducateFirstAI: React.FC = () => {
                         margin: '24px auto 0',
                       }}
                     >
-                      📜 View Chat History
+                      📜 {t('viewHistory')}
                     </button>
                   </>
                 )}
@@ -929,7 +936,8 @@ const EducateFirstAI: React.FC = () => {
               <div className="messages-container">
                 <ClearChatButton 
                   onClear={() => setMessages([])} 
-                  disabled={messages.length === 0} 
+                  disabled={messages.length === 0}
+                  t={t}
                 />
                 {messages.map((msg, index) => (
                   <div
@@ -974,7 +982,7 @@ const EducateFirstAI: React.FC = () => {
             <div className="input-wrapper">
               <textarea
                 className="text-input"
-                placeholder="Ask me anything about FAFSA, financial aid, or college funding..."
+                placeholder={t('typeMessage')}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -1040,6 +1048,7 @@ const EducateFirstAI: React.FC = () => {
           onRenameSession={(id, newTitle) => {
             setChatSessions(prev => prev.map(s => s.sessionId === id ? { ...s, title: newTitle } : s));
           }}
+          t={t}
         />
       </div>
     </>
