@@ -7,7 +7,11 @@ interface Deadline {
   emoji: string;
 }
 
-const DeadlineCountdown: React.FC = () => {
+interface DeadlineCountdownProps {
+  t: (key: string) => string;
+}
+
+const DeadlineCountdown: React.FC<DeadlineCountdownProps> = ({ t }) => {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -16,9 +20,9 @@ const DeadlineCountdown: React.FC = () => {
   }, []);
 
   const deadlines: Deadline[] = [
-    { name: 'Priority Deadline', date: new Date('2026-02-28'), type: 'priority', emoji: '🔥' },
-    { name: 'California', date: new Date('2026-03-02'), type: 'state', emoji: '🌴' },
-    { name: 'Federal Deadline', date: new Date('2027-06-30'), type: 'federal', emoji: '🏛️' },
+    { name: t('priorityDeadline'), date: new Date('2026-02-28'), type: 'priority', emoji: '🔥' },
+    { name: t('californiaDeadline'), date: new Date('2026-03-02'), type: 'state', emoji: '🌴' },
+    { name: t('federalDeadline'), date: new Date('2027-06-30'), type: 'federal', emoji: '🏛️' },
   ];
 
   const getTimeRemaining = (deadline: Date) => {
@@ -43,7 +47,7 @@ const DeadlineCountdown: React.FC = () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <span style={styles.headerIcon}>📅</span>
-        <span style={styles.headerText}>Don't Miss These Deadlines!</span>
+        <span style={styles.headerText}>{t('upcomingDeadlines')}</span>
       </div>
       <div style={styles.deadlineGrid}>
         {upcomingDeadlines.map((deadline, index) => {
@@ -64,7 +68,7 @@ const DeadlineCountdown: React.FC = () => {
                     backgroundColor: urgency.badge,
                   }}
                 >
-                  {deadline.days} days
+                  {deadline.days} {t('days')}
                 </div>
               </div>
               <div style={styles.cardBottom}>
@@ -85,7 +89,7 @@ const DeadlineCountdown: React.FC = () => {
         rel="noopener noreferrer"
         style={styles.link}
       >
-        View all state deadlines →
+        {t('viewAllDeadlines')}
       </a>
     </div>
   );
