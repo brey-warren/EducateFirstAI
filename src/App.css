@@ -132,3 +132,67 @@
 [data-theme="dark"] .empty-text {
   color: #D1D5DB;
 }
+
+
+/* Dark Mode - Chat History Sidebar */
+[data-theme="dark"] .sidebar,
+[data-theme="dark"] [style*="background: white"] {
+  background: #1F2937 !important;
+}
+
+[data-theme="dark"] .sidebar .header,
+[data-theme="dark"] [style*="borderBottom: '1px solid #E5E7EB'"] {
+  border-color: #374151 !important;
+}
+
+[data-theme="dark"] .sidebar .title {
+  color: #F0FDF4 !important;
+}
+
+[data-theme="dark"] .sidebar .closeButton,
+[data-theme="dark"] [style*="background: '#F3F4F6'"] {
+  background: #374151 !important;
+  color: #D1D5DB !important;
+}
+
+[data-theme="dark"] .sessionTitle,
+[data-theme="dark"] [style*="color: '#1F2937'"] {
+  color: #F3F4F6 !important;
+}
+
+[data-theme="dark"] .sessionPreview {
+  color: #9CA3AF !important;
+}
+
+[data-theme="dark"] .dropdown,
+[data-theme="dark"] [style*="boxShadow: '0 10px 40px"] {
+  background: #374151 !important;
+  border-color: #4B5563 !important;
+}
+
+[data-theme="dark"] .dropdownItem {
+  color: #D1D5DB !important;
+}
+
+[data-theme="dark"] .dropdownItem:hover {
+  background: #4B5563 !important;
+}
+
+
+/* Dark Mode - Dropdown Menu */
+[data-theme="dark"] .chat-dropdown {
+  background: #374151;
+  border-color: #4B5563;
+}
+
+[data-theme="dark"] .chat-dropdown-item {
+  color: #F3F4F6;
+}
+
+[data-theme="dark"] .chat-dropdown-item:hover {
+  background: #4B5563;
+}
+
+[data-theme="dark"] .chat-dropdown-item-danger {
+  color: #F87171;
+}

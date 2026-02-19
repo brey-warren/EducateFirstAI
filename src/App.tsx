@@ -32,6 +32,49 @@ const EducateFirstAI: React.FC = () => {
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const generateChatTitle = (message: string): string => {
+    const lowerMessage = message.toLowerCase().trim();
+    
+    // Define patterns and their replacements
+    const patterns: { pattern: RegExp; prefix: string }[] = [
+      { pattern: /^what documents?\s+(do i need|are needed|should i have)/i, prefix: 'Documents needed' },
+      { pattern: /^when is\s+/i, prefix: '' },
+      { pattern: /^what is\s+/i, prefix: '' },
+      { pattern: /^how (do i|can i|to)\s+/i, prefix: '' },
+      { pattern: /^can i\s+/i, prefix: '' },
+      { pattern: /^do i (need|have)\s+/i, prefix: '' },
+      { pattern: /^should i\s+/i, prefix: '' },
+      { pattern: /^why (do i|is|are)\s+/i, prefix: '' },
+      { pattern: /^tell me about\s+/i, prefix: '' },
+      { pattern: /^help me (with|understand)\s+/i, prefix: '' },
+      { pattern: /^i need help with\s+/i, prefix: '' },
+      { pattern: /^what('s| is) the\s+/i, prefix: '' },
+    ];
+
+    let title = message.trim();
+
+    // Try to match and clean up
+    for (const { pattern } of patterns) {
+      if (pattern.test(title)) {
+        title = title.replace(pattern, '');
+        break;
+      }
+    }
+
+    // Remove trailing question mark and clean up
+    title = title.replace(/\?+$/, '').trim();
+
+    // Capitalize first letter
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+
+    // Truncate if too long
+    if (title.length > 40) {
+      title = title.slice(0, 40).trim() + '...';
+    }
+
+    return title || 'New conversation';
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -83,7 +126,7 @@ const EducateFirstAI: React.FC = () => {
         setCurrentSessionId(newSessionId);
         setChatSessions(prev => [{
           sessionId: newSessionId,
-          title: userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : ''),
+          title: generateChatTitle(userMessage),
           timestamp: new Date(),
           preview: data.message.slice(0, 50) + '...',
         }, ...prev]);
@@ -945,6 +988,9 @@ const EducateFirstAI: React.FC = () => {
             setShowHistory(false);
           }}
           onDeleteSession={(id) => setChatSessions(prev => prev.filter(s => s.sessionId !== id))}
+          onRenameSession={(id, newTitle) => {
+            setChatSessions(prev => prev.map(s => s.sessionId === id ? { ...s, title: newTitle } : s));
+          }}
         />
       </div>
     </>
