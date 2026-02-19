@@ -33,8 +33,6 @@ const EducateFirstAI: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const generateChatTitle = (message: string): string => {
-    const lowerMessage = message.toLowerCase().trim();
-    
     // Define patterns and their replacements
     const patterns: { pattern: RegExp; prefix: string }[] = [
       { pattern: /^what documents?\s+(do i need|are needed|should i have)/i, prefix: 'Documents needed' },
