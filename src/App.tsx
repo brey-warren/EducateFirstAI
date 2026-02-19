@@ -56,7 +56,15 @@ const EducateFirstAI: React.FC = () => {
         body: JSON.stringify({ message: userMessage }),
       });
 
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
       const data = await response.json();
+      
+      if (!data.message) {
+        throw new Error('Invalid response format');
+      }
       
       setMessages(prev => [...prev, {
         type: 'assistant',
@@ -64,6 +72,7 @@ const EducateFirstAI: React.FC = () => {
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     } catch (error) {
+      console.error('Chat error:', error);
       setMessages(prev => [...prev, {
         type: 'assistant',
         content: "Sorry, I couldn't connect. Please try again.",
