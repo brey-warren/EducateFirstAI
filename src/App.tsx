@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SignInModal from './components/SignInModal';
+import DeadlineCountdown from './components/DeadlineCountdown';
+import DarkModeToggle from './components/DarkModeToggle';
+import ClearChatButton from './components/ClearChatButton';
+import ChatHistorySidebar from './components/ChatHistorySidebar';
 import './components/SignInModal.css';
+import './App.css';
 
 /**
  * EducateFirstAI - Complete Chat Interface with Sign In Modal
@@ -17,6 +22,14 @@ const EducateFirstAI: React.FC = () => {
   const [isGuest, setIsGuest] = useState(true);
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [userName, setUserName] = useState('');
+  const [showHistory, setShowHistory] = useState(false);
+  const [chatSessions, setChatSessions] = useState<Array<{
+    sessionId: string;
+    title: string;
+    timestamp: Date;
+    preview: string;
+  }>>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -63,6 +76,18 @@ const EducateFirstAI: React.FC = () => {
         content: data.message,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
+
+      // Save to chat history
+      if (!currentSessionId) {
+        const newSessionId = 'session-' + Date.now();
+        setCurrentSessionId(newSessionId);
+        setChatSessions(prev => [{
+          sessionId: newSessionId,
+          title: userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : ''),
+          timestamp: new Date(),
+          preview: data.message.slice(0, 50) + '...',
+        }, ...prev]);
+      }
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {
@@ -681,6 +706,22 @@ const EducateFirstAI: React.FC = () => {
                 <span className="status-dot" />
                 <span>{isGuest ? 'Guest Mode' : `Hi, ${userName}!`}</span>
               </div>
+              <button 
+                onClick={() => setShowHistory(true)} 
+                style={{
+                  background: 'rgba(255,255,255,0.15)', 
+                  border: '1px solid rgba(255,255,255,0.3)', 
+                  borderRadius: '12px', 
+                  padding: '10px 14px', 
+                  cursor: 'pointer', 
+                  fontSize: '18px',
+                  transition: 'all 0.2s ease',
+                }}
+                title="Chat history"
+              >
+                📜
+              </button>
+              <DarkModeToggle />
               {isGuest ? (
                 <button 
                   className="sign-in-button"
@@ -704,58 +745,113 @@ const EducateFirstAI: React.FC = () => {
           <div className="chat-container">
             {messages.length === 0 && (
               <div className="welcome-container">
-                <div className="welcome-icon">👋</div>
-                <h1 className="welcome-title">
-                  {isGuest ? (
-                    "Hi there! I'm your FAFSA Assistant"
-                  ) : (
-                    <>
-                      Welcome back, <span className="welcome-user">{userName}</span>!
-                    </>
-                  )}
-                </h1>
-                <p className="welcome-text">
-                  I'm here to help you navigate the FAFSA process step by step. 
-                  No question is too simple — I explain everything in plain English!
-                </p>
+                {chatSessions.length === 0 ? (
+                  // First time user - show full welcome
+                  <>
+                    <div className="welcome-icon">👋</div>
+                    <h1 className="welcome-title">
+                      {isGuest ? (
+                        "Hi there! I'm your FAFSA Assistant"
+                      ) : (
+                        <>
+                          Welcome back, <span className="welcome-user">{userName}</span>!
+                        </>
+                      )}
+                    </h1>
+                    <p className="welcome-text">
+                      I'm here to help you navigate the FAFSA process step by step. 
+                      No question is too simple — I explain everything in plain English!
+                    </p>
 
-                <div className="stats-bar">
-                  <div className="stat-item">
-                    <span className="stat-number">$3B+</span>
-                    <span className="stat-label">Aid left unclaimed yearly</span>
-                  </div>
-                  <div className="stat-divider" />
-                  <div className="stat-item">
-                    <span className="stat-number">10K+</span>
-                    <span className="stat-label">Students helped</span>
-                  </div>
-                  <div className="stat-divider" />
-                  <div className="stat-item">
-                    <span className="stat-number">24/7</span>
-                    <span className="stat-label">Always available</span>
-                  </div>
-                </div>
+                    <div className="stats-bar">
+                      <div className="stat-item">
+                        <span className="stat-number">$3B+</span>
+                        <span className="stat-label">Aid left unclaimed yearly</span>
+                      </div>
+                      <div className="stat-divider" />
+                      <div className="stat-item">
+                        <span className="stat-number">10K+</span>
+                        <span className="stat-label">Students helped</span>
+                      </div>
+                      <div className="stat-divider" />
+                      <div className="stat-item">
+                        <span className="stat-number">24/7</span>
+                        <span className="stat-label">Always available</span>
+                      </div>
+                    </div>
 
-                <div className="quick-questions-section">
-                  <p className="quick-questions-label">Popular questions to get started:</p>
-                  <div className="quick-questions-grid">
-                    {quickQuestions.map((q, index) => (
-                      <button
-                        key={index}
-                        className="quick-question-button"
-                        onClick={() => handleQuickQuestion(q.text)}
-                      >
-                        <span className="quick-question-icon">{q.icon}</span>
-                        <span className="quick-question-text">{q.text}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                    <DeadlineCountdown />
+
+                    <div className="quick-questions-section">
+                      <p className="quick-questions-label">Popular questions to get started:</p>
+                      <div className="quick-questions-grid">
+                        {quickQuestions.map((q, index) => (
+                          <button
+                            key={index}
+                            className="quick-question-button"
+                            onClick={() => handleQuickQuestion(q.text)}
+                          >
+                            <span className="quick-question-icon">{q.icon}</span>
+                            <span className="quick-question-text">{q.text}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Returning user with chat history - show simple prompt
+                  <>
+                    <div style={{ fontSize: '64px', marginBottom: '24px' }}>💬</div>
+                    <h1 className="welcome-title">Start a New Conversation</h1>
+                    <p className="welcome-text" style={{ marginBottom: '32px' }}>
+                      Ask me anything about FAFSA, financial aid, or college funding!
+                    </p>
+                    <div className="quick-questions-section">
+                      <p className="quick-questions-label">Or try one of these:</p>
+                      <div className="quick-questions-grid">
+                        {quickQuestions.map((q, index) => (
+                          <button
+                            key={index}
+                            className="quick-question-button"
+                            onClick={() => setInputValue(q.text)}
+                          >
+                            <span className="quick-question-icon">{q.icon}</span>
+                            <span className="quick-question-text">{q.text}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowHistory(true)}
+                      style={{
+                        marginTop: '24px',
+                        padding: '12px 24px',
+                        background: 'transparent',
+                        border: '2px solid #10B981',
+                        borderRadius: '12px',
+                        color: '#10B981',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        margin: '24px auto 0',
+                      }}
+                    >
+                      📜 View Chat History
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
             {messages.length > 0 && (
               <div className="messages-container">
+                <ClearChatButton 
+                  onClear={() => setMessages([])} 
+                  disabled={messages.length === 0} 
+                />
                 {messages.map((msg, index) => (
                   <div
                     key={index}
@@ -832,6 +928,23 @@ const EducateFirstAI: React.FC = () => {
             setIsGuest(false);
             setShowSignInModal(false);
           }}
+        />
+
+        <ChatHistorySidebar
+          isOpen={showHistory}
+          onClose={() => setShowHistory(false)}
+          sessions={chatSessions}
+          currentSessionId={currentSessionId}
+          onSelectSession={(id) => {
+            setCurrentSessionId(id);
+            setShowHistory(false);
+          }}
+          onNewChat={() => {
+            setMessages([]);
+            setCurrentSessionId(null);
+            setShowHistory(false);
+          }}
+          onDeleteSession={(id) => setChatSessions(prev => prev.filter(s => s.sessionId !== id))}
         />
       </div>
     </>

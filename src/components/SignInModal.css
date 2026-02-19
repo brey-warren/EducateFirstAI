@@ -195,3 +195,73 @@
 .switch-mode-link:hover {
   text-decoration: underline;
 }
+
+/* Dark Mode - Sign In Modal */
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-content {
+  background: #1F2937;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .modal-close {
+  background: #374151;
+  color: #9CA3AF;
+}
+
+[data-theme="dark"] .modal-close:hover {
+  background: #4B5563;
+  color: #F3F4F6;
+}
+
+[data-theme="dark"] .modal-title {
+  color: #F0FDF4;
+}
+
+[data-theme="dark"] .modal-subtitle {
+  color: #9CA3AF;
+}
+
+[data-theme="dark"] .form-label {
+  color: #D1D5DB;
+}
+
+[data-theme="dark"] .form-input {
+  background: #374151;
+  border-color: #4B5563;
+  color: #F3F4F6;
+}
+
+[data-theme="dark"] .form-input:focus {
+  background: #374151;
+  border-color: #10B981;
+}
+
+[data-theme="dark"] .form-input::placeholder {
+  color: #6B7280;
+}
+
+[data-theme="dark"] .divider-line {
+  background: #374151;
+}
+
+[data-theme="dark"] .divider-text {
+  color: #6B7280;
+}
+
+[data-theme="dark"] .guest-button {
+  background: #374151;
+  border-color: #4B5563;
+  color: #D1D5DB;
+}
+
+[data-theme="dark"] .guest-button:hover {
+  background: #4B5563;
+  border-color: #10B981;
+}
+
+[data-theme="dark"] .switch-mode {
+  color: #9CA3AF;
+}
