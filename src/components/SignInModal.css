@@ -103,6 +103,11 @@
   font-family: inherit;
   transition: all 0.2s;
   background: #F9FAFB;
+  color: #1F2937;
+}
+
+.form-input::placeholder {
+  color: #9CA3AF;
 }
 
 .form-input:focus {
