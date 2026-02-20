@@ -41,6 +41,11 @@ const EducateFirstAI: React.FC = () => {
     preview: string;
   }>>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [chatMessagesMap, setChatMessagesMap] = useState<Record<string, Array<{
+    type: string;
+    content: string;
+    time: string;
+  }>>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [typingMessageId, setTypingMessageId] = useState<number | null>(null);
   const [language, setLanguage] = useState('en');
@@ -136,11 +141,13 @@ const EducateFirstAI: React.FC = () => {
 
     const userMessage = inputValue;
     
-    setMessages(prev => [...prev, {
+    const userMsg = {
       type: 'user',
       content: userMessage,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }]);
+    };
+    
+    setMessages(prev => [...prev, userMsg]);
     setInputValue('');
     setIsTyping(true);
 
@@ -157,15 +164,19 @@ const EducateFirstAI: React.FC = () => {
       
       setTypingMessageId(messages.length + 1);
       
-      setMessages(prev => [...prev, {
+      const assistantMsg = {
         type: 'assistant',
         content: data.message,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }]);
+      };
+      
+      setMessages(prev => [...prev, assistantMsg]);
 
       // Save to chat history
+      let sessionToSave = currentSessionId;
       if (!currentSessionId) {
         const newSessionId = 'session-' + Date.now();
+        sessionToSave = newSessionId;
         setCurrentSessionId(newSessionId);
         setChatSessions(prev => [{
           sessionId: newSessionId,
@@ -173,6 +184,15 @@ const EducateFirstAI: React.FC = () => {
           timestamp: new Date(),
           preview: data.message.slice(0, 50) + '...',
         }, ...prev]);
+      }
+      
+      // Save messages to the map
+      const updatedMessages = [...messages, userMsg, assistantMsg];
+      if (sessionToSave) {
+        setChatMessagesMap(prev => ({
+          ...prev,
+          [sessionToSave]: updatedMessages
+        }));
       }
     } catch (error) {
       console.error('Error:', error);
@@ -1127,10 +1147,28 @@ const EducateFirstAI: React.FC = () => {
           sessions={chatSessions}
           currentSessionId={currentSessionId}
           onSelectSession={(id) => {
+            // Save current chat before switching
+            if (currentSessionId && messages.length > 0) {
+              setChatMessagesMap(prev => ({
+                ...prev,
+                [currentSessionId]: messages
+              }));
+            }
+            
+            // Load the selected chat's messages
+            const savedMessages = chatMessagesMap[id] || [];
+            setMessages(savedMessages);
             setCurrentSessionId(id);
             setShowHistory(false);
           }}
           onNewChat={() => {
+            // Save current chat before clearing
+            if (currentSessionId && messages.length > 0) {
+              setChatMessagesMap(prev => ({
+                ...prev,
+                [currentSessionId]: messages
+              }));
+            }
             setMessages([]);
             setCurrentSessionId(null);
             setShowHistory(false);
@@ -1138,6 +1176,13 @@ const EducateFirstAI: React.FC = () => {
           onDeleteSession={(id) => {
             // Remove from chat sessions
             setChatSessions(prev => prev.filter(s => s.sessionId !== id));
+            
+            // Remove from messages map
+            setChatMessagesMap(prev => {
+              const newMap = { ...prev };
+              delete newMap[id];
+              return newMap;
+            });
             
             // If the deleted chat is currently open, clear it
             if (currentSessionId === id) {

@@ -116,12 +116,15 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
               <p style={styles.emptySubtext}>{t('startConversation')}</p>
             </div>
           ) : (
-            sessions.map((session) => (
+            sessions.map((session) => {
+              const isSelected = currentSessionId === session.sessionId;
+              
+              return (
               <div
                 key={session.sessionId}
                 style={{
                   ...styles.sessionItem,
-                  ...(currentSessionId === session.sessionId ? styles.sessionItemActive : {}),
+                  ...(isSelected ? styles.sessionItemActive : {}),
                 }}
                 onClick={() => {
                   if (!editingId) {
@@ -149,10 +152,25 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                       }}
                     />
                   ) : (
-                    <span style={styles.sessionTitle}>{session.title}</span>
+                    <span style={{
+                      ...styles.sessionTitle,
+                      color: isSelected
+                        ? '#065F46'  // Dark green when selected (works on light green background)
+                        : (isDarkMode ? '#F3F4F6' : '#1F2937'),  // Light text in dark mode, dark text in light mode
+                    }}>{session.title}</span>
                   )}
-                  <span style={styles.sessionPreview}>{session.preview}</span>
-                  <span style={styles.sessionDate}>{formatDate(session.timestamp)}</span>
+                  <span style={{
+                    ...styles.sessionPreview,
+                    color: isSelected
+                      ? '#047857'  // Darker green when selected
+                      : (isDarkMode ? '#9CA3AF' : '#6B7280'),
+                  }}>{session.preview}</span>
+                  <span style={{
+                    ...styles.sessionDate,
+                    color: isSelected
+                      ? '#059669'  // Green when selected
+                      : (isDarkMode ? '#6B7280' : '#9CA3AF'),
+                  }}>{formatDate(session.timestamp)}</span>
                 </div>
 
                 <div style={styles.menuContainer} ref={menuOpen === session.sessionId ? menuRef : null}>
@@ -201,7 +219,8 @@ const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                   )}
                 </div>
               </div>
-            ))
+            );
+            })
           )}
         </div>
       </div>
