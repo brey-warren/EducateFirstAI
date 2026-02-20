@@ -9,7 +9,12 @@ import VoiceInput from './components/VoiceInput';
 import TypingMessage from './components/TypingMessage';
 import LanguageSelector from './components/LanguageSelector';
 import FAFSAChecklist from './components/FAFSAChecklist';
+import MobileMenu from './components/MobileMenu';
+import CopyButton from './components/CopyButton';
+import ScrollToBottom from './components/ScrollToBottom';
 import { useTranslation } from './hooks/useTranslation';
+import { useTheme } from './context/ThemeContext';
+import logo from './assets/logo.svg';
 import './components/SignInModal.css';
 import './App.css';
 
@@ -41,6 +46,7 @@ const EducateFirstAI: React.FC = () => {
   const [language, setLanguage] = useState('en');
   const { t } = useTranslation(language as any);
   const [showChecklist, setShowChecklist] = useState(false);
+  const { isDarkMode } = useTheme();
 
   const generateChatTitle = (message: string): string => {
     // Define patterns and their replacements
@@ -780,7 +786,7 @@ const EducateFirstAI: React.FC = () => {
         <header className="header">
           <div className="header-content">
             <div className="logo-section">
-              <div className="logo-icon">🎓</div>
+              <img src={logo} alt="EducateFirstAI Logo" className="logo-icon" style={{ width: '48px', height: '48px', borderRadius: '12px' }} />
               <div>
                 <div className="logo-text">EducateFirstAI</div>
                 <div className="tagline">{t('subtitle')}</div>
@@ -791,61 +797,78 @@ const EducateFirstAI: React.FC = () => {
                 <span className="status-dot" />
                 <span>{isGuest ? <span className="guest-badge-text">Guest Mode</span> : <><span className="user-name-text">{t('welcome')}, {userName}!</span></>}</span>
               </div>
-              <LanguageSelector 
-                currentLanguage={language} 
-                onLanguageChange={setLanguage} 
+              
+              <div className="desktop-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <LanguageSelector 
+                  currentLanguage={language} 
+                  onLanguageChange={setLanguage}
+                  disabled={isTyping}
+                />
+                <button 
+                  onClick={() => setShowChecklist(true)} 
+                  style={{
+                    background: 'rgba(255,255,255,0.15)', 
+                    border: '1px solid rgba(255,255,255,0.3)', 
+                    borderRadius: '12px', 
+                    padding: '10px 14px', 
+                    cursor: 'pointer', 
+                    fontSize: '18px',
+                    transition: 'all 0.2s ease',
+                  }}
+                  title="FAFSA Checklist"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                  </svg>
+                </button>
+                <button 
+                  onClick={() => setShowHistory(true)} 
+                  style={{
+                    background: 'rgba(255,255,255,0.15)', 
+                    border: '1px solid rgba(255,255,255,0.3)', 
+                    borderRadius: '12px', 
+                    padding: '10px 14px', 
+                    cursor: 'pointer', 
+                    fontSize: '18px',
+                    transition: 'all 0.2s ease',
+                  }}
+                  title="Chat history"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                </button>
+                <DarkModeToggle />
+                {isGuest ? (
+                  <button 
+                    className="sign-in-button"
+                    onClick={() => setShowSignInModal(true)}
+                  >
+                    {t('signIn')}
+                  </button>
+                ) : (
+                  <button 
+                    className="sign-out-button"
+                    onClick={handleSignOut}
+                  >
+                    {t('signOut')}
+                  </button>
+                )}
+              </div>
+
+              <MobileMenu
+                isGuest={isGuest}
+                userName={userName}
+                onSignIn={() => setShowSignInModal(true)}
+                onSignOut={handleSignOut}
+                onShowHistory={() => setShowHistory(true)}
+                onShowChecklist={() => setShowChecklist(true)}
+                currentLanguage={language}
+                onLanguageChange={setLanguage}
+                t={t}
+                disabled={isTyping}
               />
-              <button 
-                onClick={() => setShowChecklist(true)} 
-                style={{
-                  background: 'rgba(255,255,255,0.15)', 
-                  border: '1px solid rgba(255,255,255,0.3)', 
-                  borderRadius: '12px', 
-                  padding: '10px 14px', 
-                  cursor: 'pointer', 
-                  fontSize: '18px',
-                  transition: 'all 0.2s ease',
-                }}
-                title="FAFSA Checklist"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M9 11l3 3L22 4"/>
-                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                </svg>
-              </button>
-              <button 
-                onClick={() => setShowHistory(true)} 
-                style={{
-                  background: 'rgba(255,255,255,0.15)', 
-                  border: '1px solid rgba(255,255,255,0.3)', 
-                  borderRadius: '12px', 
-                  padding: '10px 14px', 
-                  cursor: 'pointer', 
-                  fontSize: '18px',
-                  transition: 'all 0.2s ease',
-                }}
-                title="Chat history"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-              </button>
-              <DarkModeToggle />
-              {isGuest ? (
-                <button 
-                  className="sign-in-button"
-                  onClick={() => setShowSignInModal(true)}
-                >
-                  {t('signIn')}
-                </button>
-              ) : (
-                <button 
-                  className="sign-out-button"
-                  onClick={handleSignOut}
-                >
-                  {t('signOut')}
-                </button>
-              )}
             </div>
           </div>
         </header>
@@ -967,27 +990,59 @@ const EducateFirstAI: React.FC = () => {
                     className={`message-wrapper ${msg.type}`}
                   >
                     {msg.type === 'assistant' && (
-                      <div className="assistant-avatar">🎓</div>
+                      <img 
+                        src={logo} 
+                        alt="AI" 
+                        className="assistant-avatar"
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          flexShrink: 0,
+                        }}
+                      />
                     )}
-                    <div className={`message-bubble ${msg.type}`}>
-                      <p className="message-text">
-                        {msg.type === 'assistant' && index === messages.length - 1 && typingMessageId !== null ? (
-                          <TypingMessage 
-                            content={msg.content} 
-                            onComplete={() => setTypingMessageId(null)}
-                          />
-                        ) : (
-                          msg.content
-                        )}
-                      </p>
-                      <span className="message-time">{msg.time}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: msg.type === 'assistant' ? 'flex-start' : 'flex-end' }}>
+                      <div className={`message-bubble ${msg.type}`}>
+                        <p className="message-text">
+                          {msg.type === 'assistant' && index === messages.length - 1 && typingMessageId !== null ? (
+                            <TypingMessage 
+                              content={msg.content} 
+                              onComplete={() => setTypingMessageId(null)}
+                            />
+                          ) : (
+                            msg.content
+                          )}
+                        </p>
+                        <span className="message-time">{msg.time}</span>
+                      </div>
+                      {msg.type === 'assistant' && (
+                        <div className="message-actions" style={{
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          marginTop: '4px',
+                          marginLeft: '8px',
+                        }}>
+                          <CopyButton text={msg.content} isDarkMode={isDarkMode} t={t} />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
 
                 {isTyping && (
                   <div className="message-wrapper">
-                    <div className="assistant-avatar">🎓</div>
+                    <img 
+                      src={logo} 
+                      alt="AI" 
+                      className="assistant-avatar"
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        flexShrink: 0,
+                      }}
+                    />
                     <div className="typing-indicator">
                       <span className="typing-dot" />
                       <span className="typing-dot" />
@@ -998,49 +1053,57 @@ const EducateFirstAI: React.FC = () => {
                 <div ref={messagesEndRef} />
               </div>
             )}
-          </div>
 
-          <div className="input-container">
-            <div className="input-wrapper">
-              <textarea
-                className="text-input"
-                placeholder={t('typeMessage')}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                rows={1}
-              />
-              <VoiceInput 
-                onTranscript={(text) => setInputValue(text)} 
-                disabled={isTyping}
-              />
-              <button
-                className="send-button"
-                onClick={handleSend}
-                disabled={!inputValue.trim()}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 2L11 13" />
-                  <path d="M22 2L15 22L11 13L2 9L22 2Z" />
-                </svg>
-              </button>
-            </div>
-            <p className="disclaimer">
-              EducateFirstAI provides guidance only. Always verify with{' '}
-              <a href="https://studentaid.gov" target="_blank" rel="noopener noreferrer">
-                StudentAid.gov
-              </a>
-            </p>
           </div>
         </main>
 
-        <footer className="footer">
-          <div className="footer-content">
-            <span>Built with ❤️ for first-gen students</span>
-            <span className="footer-divider">•</span>
-            <span className="aws-badge">☁️ Powered by AWS</span>
+        <div className="input-container">
+          <div className="input-wrapper">
+            <textarea
+              className="text-input"
+              placeholder={t('typeMessage')}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={1}
+            />
+            <VoiceInput 
+              onTranscript={(text) => setInputValue(text)} 
+              disabled={isTyping}
+            />
+            <button
+              className="send-button"
+              onClick={handleSend}
+              disabled={!inputValue.trim()}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 2L11 13" />
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+              </svg>
+            </button>
           </div>
-        </footer>
+          <div className="footer-disclaimer" style={{
+            textAlign: 'center',
+            padding: '8px 16px',
+            fontSize: '12px',
+            color: isDarkMode ? '#9CA3AF' : '#6B7280',
+          }}>
+            <div style={{ marginBottom: '4px' }}>
+              Built with ❤️ for first-gen students
+            </div>
+            <div>
+              EducateFirstAI provides guidance only. Always verify with{' '}
+              <a
+                href="https://studentaid.gov"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#10B981', textDecoration: 'none' }}
+              >
+                StudentAid.gov
+              </a>
+            </div>
+          </div>
+        </div>
 
         <SignInModal
           isOpen={showSignInModal}
@@ -1078,6 +1141,8 @@ const EducateFirstAI: React.FC = () => {
           isOpen={showChecklist}
           onClose={() => setShowChecklist(false)}
         />
+
+        <ScrollToBottom isDarkMode={isDarkMode} hasMessages={messages.length > 0} onScrollToBottom={scrollToBottom} />
       </div>
     </>
   );

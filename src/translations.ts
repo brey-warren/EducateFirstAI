@@ -56,6 +56,10 @@ export const translations = {
     complete: "Complete",
     resetProgress: "Reset Progress",
     
+    // Copy button
+    copy: "Copy",
+    copied: "Copied!",
+    
     // Sign in modal
     welcomeBack: "Welcome Back",
     createAccount: "Create Account",
@@ -130,6 +134,10 @@ export const translations = {
     trackProgress: "Sigue el progreso de tu solicitud",
     complete: "Completado",
     resetProgress: "Reiniciar Progreso",
+    
+    // Copy button
+    copy: "Copiar",
+    copied: "¡Copiado!",
     
     // Sign in modal
     welcomeBack: "Bienvenido",
@@ -206,6 +214,10 @@ export const translations = {
     complete: "完成",
     resetProgress: "重置进度",
     
+    // Copy button
+    copy: "复制",
+    copied: "已复制！",
+    
     // Sign in modal
     welcomeBack: "欢迎回来",
     createAccount: "创建账户",
@@ -280,6 +292,10 @@ export const translations = {
     trackProgress: "Theo dõi tiến trình đơn của bạn",
     complete: "Hoàn thành",
     resetProgress: "Đặt lại Tiến trình",
+    
+    // Copy button
+    copy: "Sao chép",
+    copied: "Đã sao chép!",
     
     // Sign in modal
     welcomeBack: "Chào mừng trở lại",
@@ -356,6 +372,10 @@ export const translations = {
     complete: "완료",
     resetProgress: "진행 상황 초기화",
     
+    // Copy button
+    copy: "복사",
+    copied: "복사됨!",
+    
     // Sign in modal
     welcomeBack: "다시 오신 것을 환영합니다",
     createAccount: "계정 만들기",
@@ -430,6 +450,10 @@ export const translations = {
     trackProgress: "Suivez la progression de votre demande",
     complete: "Terminé",
     resetProgress: "Réinitialiser la Progression",
+    
+    // Copy button
+    copy: "Copier",
+    copied: "Copié!",
     
     // Sign in modal
     welcomeBack: "Bon Retour",

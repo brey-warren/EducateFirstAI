@@ -10,6 +10,7 @@ interface Language {
 interface LanguageSelectorProps {
   currentLanguage: string;
   onLanguageChange: (code: string) => void;
+  disabled?: boolean;
 }
 
 const languages: Language[] = [
@@ -21,16 +22,21 @@ const languages: Language[] = [
   { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
 ];
 
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, onLanguageChange }) => {
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, onLanguageChange, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const currentLang = languages.find(l => l.code === currentLanguage) || languages[0];
 
   return (
     <div style={styles.container}>
       <button 
-        onClick={() => setIsOpen(!isOpen)} 
-        style={styles.button}
-        title="Change language"
+        onClick={() => !disabled && setIsOpen(!isOpen)} 
+        style={{
+          ...styles.button,
+          opacity: disabled ? 0.5 : 1,
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+        disabled={disabled}
+        title={disabled ? 'Please wait for response' : 'Change language'}
       >
         <span style={styles.flag}>{currentLang.flag}</span>
         <span style={styles.code} className="language-code">{currentLang.code.toUpperCase()}</span>
