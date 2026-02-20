@@ -33,7 +33,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, on
         title="Change language"
       >
         <span style={styles.flag}>{currentLang.flag}</span>
-        <span style={styles.code}>{currentLang.code.toUpperCase()}</span>
+        <span style={styles.code} className="language-code">{currentLang.code.toUpperCase()}</span>
       </button>
 
       {isOpen && (

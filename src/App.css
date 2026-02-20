@@ -220,3 +220,469 @@
     opacity: 0;
   }
 }
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+/* Tablet and below (768px and smaller) */
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-logo {
+    flex: 1;
+  }
+
+  .header-logo-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .header-title {
+    font-size: 18px;
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-actions button {
+    padding: 6px 10px;
+  }
+
+  .welcome-container {
+    padding: 20px 16px;
+  }
+
+  .welcome-title {
+    font-size: 22px;
+  }
+
+  .welcome-text {
+    font-size: 14px;
+  }
+
+  .stats-bar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .stat-item {
+    padding: 8px 0;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .quick-questions-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .quick-question-button {
+    padding: 14px;
+  }
+
+  .deadline-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .messages-container {
+    padding: 16px;
+  }
+
+  .message-bubble {
+    max-width: 90%;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .input-container {
+    padding: 12px 16px;
+  }
+
+  .input-wrapper {
+    padding: 8px 12px;
+  }
+
+  .text-input {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  .send-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footer {
+    padding: 16px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+/* Mobile (480px and smaller) */
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 12px;
+  }
+
+  .header-title {
+    font-size: 16px;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .header-actions button {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+
+  .user-greeting {
+    display: none;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+  }
+
+  .welcome-text {
+    font-size: 13px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .quick-question-text {
+    font-size: 13px;
+  }
+
+  .message-bubble {
+    max-width: 95%;
+    font-size: 14px;
+  }
+
+  .input-wrapper {
+    padding: 6px 10px;
+  }
+}
+
+/* Desktop (1024px and larger) */
+@media (min-width: 1024px) {
+  .main-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .welcome-container {
+    padding: 40px;
+  }
+
+  .welcome-title {
+    font-size: 32px;
+  }
+
+  .messages-container {
+    padding: 24px 40px;
+  }
+
+  .message-bubble {
+    max-width: 70%;
+  }
+
+  .input-container {
+    padding: 16px 40px 24px;
+  }
+}
+
+/* Large Desktop (1440px and larger) */
+@media (min-width: 1440px) {
+  .main-content {
+    max-width: 1000px;
+  }
+
+  .welcome-title {
+    font-size: 36px;
+  }
+
+  .message-bubble {
+    max-width: 60%;
+  }
+}
+
+/* Fix for iOS Safari input zoom */
+@supports (-webkit-touch-callout: none) {
+  .text-input {
+    font-size: 16px;
+  }
+}
+
+/* Landscape phone orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  .welcome-container {
+    padding: 16px;
+  }
+
+  .stats-bar {
+    flex-direction: row;
+    padding: 12px;
+  }
+
+  .stat-divider {
+    display: block;
+  }
+
+  .deadline-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================
+   MOBILE FIXES
+   ============================================ */
+
+/* Ensure full width on mobile */
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Mobile Header Fix */
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .header-logo {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .header-logo-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .header-actions button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  /* Hide text on mobile, show only icons */
+  .guest-badge-text,
+  .user-name-text {
+    display: none;
+  }
+
+  .language-code {
+    display: none;
+  }
+}
+
+/* Welcome Section Mobile Fix */
+@media (max-width: 480px) {
+  .welcome-container {
+    padding: 20px 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .welcome-icon {
+    font-size: 48px;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+    line-height: 1.3;
+    padding: 0 10px;
+  }
+
+  .welcome-text {
+    font-size: 14px;
+    padding: 0 10px;
+    line-height: 1.5;
+  }
+
+  /* Stats Bar - Stack Vertically */
+  .stats-bar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .stat-item {
+    width: 100%;
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  /* Deadlines - Single Column */
+  .deadline-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .deadline-card {
+    width: 100%;
+  }
+
+  /* Quick Questions - Single Column */
+  .quick-questions-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .quick-question-button {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .quick-question-text {
+    font-size: 13px;
+  }
+}
+
+/* Input Area Mobile Fix */
+@media (max-width: 480px) {
+  .input-container {
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .input-wrapper {
+    padding: 8px 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .text-input {
+    font-size: 16px; /* Prevents iOS zoom */
+    width: 100%;
+  }
+
+  .send-button {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .voice-button {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+}
+
+/* Messages Mobile Fix */
+@media (max-width: 480px) {
+  .messages-container {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .message-bubble {
+    max-width: 90%;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Footer Mobile Fix */
+@media (max-width: 480px) {
+  .footer {
+    padding: 12px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  .aws-badge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}
+
+/* Prevent horizontal scroll */
+* {
+  max-width: 100%;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+}

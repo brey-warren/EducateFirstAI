@@ -789,7 +789,7 @@ const EducateFirstAI: React.FC = () => {
             <div className="header-actions">
               <div className="status-badge">
                 <span className="status-dot" />
-                <span>{isGuest ? 'Guest Mode' : `${t('welcome')}, ${userName}!`}</span>
+                <span>{isGuest ? <span className="guest-badge-text">Guest Mode</span> : <><span className="user-name-text">{t('welcome')}, {userName}!</span></>}</span>
               </div>
               <LanguageSelector 
                 currentLanguage={language} 
