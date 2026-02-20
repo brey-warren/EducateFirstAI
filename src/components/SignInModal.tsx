@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { signIn, signUp, confirmSignUp } from 'aws-amplify/auth';
 import { TranslationKey } from '../translations';
+import logo from '../assets/logo.svg';
 import './SignInModal.css';
 
 interface SignInModalProps {
@@ -103,7 +104,16 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn, t 
         </button>
 
         <div className="modal-header">
-          <div className="modal-icon">🎓</div>
+          <img
+            src={logo}
+            alt="EducateFirstAI"
+            style={{
+              width: '64px',
+              height: '64px',
+              marginBottom: '16px',
+              borderRadius: '16px',
+            }}
+          />
           <h2 className="modal-title">
             {needsConfirmation 
               ? t('checkYourEmail')
