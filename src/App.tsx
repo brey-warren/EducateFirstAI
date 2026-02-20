@@ -226,6 +226,9 @@ const EducateFirstAI: React.FC = () => {
     setIsGuest(true);
     setUserName('');
     setMessages([]);
+    setCurrentSessionId(null);
+    setChatSessions([]);
+    setChatMessagesMap({});
   };
 
   return (
@@ -1006,7 +1009,21 @@ const EducateFirstAI: React.FC = () => {
             {messages.length > 0 && (
               <div className="messages-container">
                 <ClearChatButton 
-                  onClear={() => setMessages([])} 
+                  onClear={() => {
+                    // Clear current messages
+                    setMessages([]);
+                    
+                    // Remove from chat sessions and messages map if there's a current session
+                    if (currentSessionId) {
+                      setChatSessions(prev => prev.filter(s => s.sessionId !== currentSessionId));
+                      setChatMessagesMap(prev => {
+                        const newMap = { ...prev };
+                        delete newMap[currentSessionId];
+                        return newMap;
+                      });
+                      setCurrentSessionId(null);
+                    }
+                  }}
                   disabled={messages.length === 0}
                   t={t}
                 />
