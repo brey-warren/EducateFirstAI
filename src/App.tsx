@@ -843,7 +843,10 @@ const EducateFirstAI: React.FC = () => {
                 {isGuest ? (
                   <button 
                     className="sign-in-button"
-                    onClick={() => setShowSignInModal(true)}
+                    onClick={() => {
+                      setShowHistory(false);
+                      setShowSignInModal(true);
+                    }}
                   >
                     {t('signIn')}
                   </button>
@@ -860,7 +863,10 @@ const EducateFirstAI: React.FC = () => {
               <MobileMenu
                 isGuest={isGuest}
                 userName={userName}
-                onSignIn={() => setShowSignInModal(true)}
+                onSignIn={() => {
+                  setShowHistory(false);
+                  setShowSignInModal(true);
+                }}
                 onSignOut={handleSignOut}
                 onShowHistory={() => setShowHistory(true)}
                 onShowChecklist={() => setShowChecklist(true)}
@@ -1129,7 +1135,16 @@ const EducateFirstAI: React.FC = () => {
             setCurrentSessionId(null);
             setShowHistory(false);
           }}
-          onDeleteSession={(id) => setChatSessions(prev => prev.filter(s => s.sessionId !== id))}
+          onDeleteSession={(id) => {
+            // Remove from chat sessions
+            setChatSessions(prev => prev.filter(s => s.sessionId !== id));
+            
+            // If the deleted chat is currently open, clear it
+            if (currentSessionId === id) {
+              setMessages([]);
+              setCurrentSessionId(null);
+            }
+          }}
           onRenameSession={(id, newTitle) => {
             setChatSessions(prev => prev.map(s => s.sessionId === id ? { ...s, title: newTitle } : s));
           }}

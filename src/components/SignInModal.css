@@ -5,9 +5,13 @@
   to { opacity: 1; }
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-overlay {
@@ -23,7 +27,8 @@
   justify-content: center;
   z-index: 1000;
   padding: 20px;
-  animation: fadeIn 0.2s ease-out;
+  /* Remove animation here too */
+  animation: none !important;
 }
 
 .modal-content {
@@ -33,8 +38,14 @@
   max-width: 420px;
   width: 100%;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-  animation: slideUp 0.3s ease-out;
   position: relative;
+  margin: 0 auto;
+  /* Remove any animation */
+  animation: none !important;
+  /* Ensure it doesn't start from left */
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
 }
 
 .modal-close {

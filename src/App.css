@@ -744,6 +744,33 @@ img, svg {
 }
 
 /* ============================================
+   FIX SIGN-IN MODAL POSITION
+   ============================================ */
+
+/* Fix Sign-In Modal Position */
+.modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1000 !important;
+}
+
+.modal-content {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 auto !important;
+}
+
+/* ============================================
    LAYOUT FIX - Proper Scrolling
    ============================================ */
 

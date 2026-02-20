@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { signIn, signUp, confirmSignUp } from 'aws-amplify/auth';
 import './SignInModal.css';
 
@@ -86,9 +87,15 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
 
   if (!isOpen) return null;
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+  return ReactDOM.createPortal(
+    <div 
+      className="modal-overlay" 
+      onClick={onClose}
+    >
+      <div 
+        className="modal-content" 
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="modal-close" onClick={onClose}>
           ✕
         </button>
@@ -206,7 +213,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
