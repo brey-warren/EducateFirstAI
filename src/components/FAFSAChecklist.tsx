@@ -14,22 +14,23 @@ interface FAFSAChecklistProps {
   onClose: () => void;
 }
 
-const checklistItems: ChecklistItem[] = [
-  { id: 'fsaId', label: 'Create StudentAid.gov Account', description: 'Student and parent each need their own account (FSA ID)' },
-  { id: 'ssn', label: 'Social Security Numbers', description: 'SSN for student and all contributors (parents)' },
-  { id: 'taxReturn', label: 'Gather 2024 Tax Returns', description: '2024 federal tax returns for student and parents' },
-  { id: 'w2Forms', label: 'Collect W-2 Forms', description: '2024 W-2s and other income records' },
-  { id: 'bankStatements', label: 'Bank Account Balances', description: 'Current checking and savings balances' },
-  { id: 'investments', label: 'Investment Records', description: 'Stocks, bonds, 529 plans (NOT retirement accounts)' },
-  { id: 'schoolList', label: 'List of Schools', description: 'Up to 20 schools to receive your FAFSA' },
-  { id: 'consentIRS', label: 'Consent to IRS Data Transfer', description: 'Required for automatic tax info import' },
-  { id: 'inviteContributors', label: 'Invite Contributors', description: 'Parents must accept invite and complete their section' },
-  { id: 'reviewSubmit', label: 'Review & Submit', description: 'Check all info, then sign electronically' },
-  { id: 'confirmation', label: 'Save Confirmation', description: 'Download your Student Aid Report (SAR)' },
+const getChecklistItems = (t: (key: TranslationKey) => string): ChecklistItem[] => [
+  { id: 'fsaId', label: t('checklistStep1'), description: t('checklistStep1Desc') },
+  { id: 'ssn', label: t('checklistStep2'), description: t('checklistStep2Desc') },
+  { id: 'taxReturn', label: t('checklistStep3'), description: t('checklistStep3Desc') },
+  { id: 'w2Forms', label: t('checklistStep4'), description: t('checklistStep4Desc') },
+  { id: 'bankStatements', label: t('checklistStep5'), description: t('checklistStep5Desc') },
+  { id: 'investments', label: t('checklistStep6'), description: t('checklistStep6Desc') },
+  { id: 'schoolList', label: t('checklistStep7'), description: t('checklistStep7Desc') },
+  { id: 'consentIRS', label: t('checklistStep8'), description: t('checklistStep8Desc') },
+  { id: 'inviteContributors', label: t('checklistStep9'), description: t('checklistStep9Desc') },
+  { id: 'reviewSubmit', label: t('checklistStep10'), description: t('checklistStep10Desc') },
+  { id: 'confirmation', label: t('checklistStep11'), description: t('checklistStep11Desc') },
 ];
 
 const FAFSAChecklist: React.FC<FAFSAChecklistProps> = ({ t, isOpen, onClose }) => {
   const { isDarkMode } = useTheme();
+  const checklistItems = getChecklistItems(t);
   const [completed, setCompleted] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('fafsaChecklist');
     return saved ? new Set(JSON.parse(saved)) : new Set();

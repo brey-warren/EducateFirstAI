@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { signIn, signUp, confirmSignUp } from 'aws-amplify/auth';
+import { TranslationKey } from '../translations';
 import './SignInModal.css';
 
 interface SignInModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSignIn: (name: string) => void;
+  t: (key: TranslationKey) => string;
 }
 
-const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) => {
+const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn, t }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
   const [email, setEmail] = useState('');
@@ -104,13 +106,13 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
           <div className="modal-icon">🎓</div>
           <h2 className="modal-title">
             {needsConfirmation 
-              ? 'Check Your Email' 
-              : isSignUp ? 'Create Account' : 'Welcome Back'}
+              ? t('checkYourEmail')
+              : isSignUp ? t('createAccount') : t('welcomeBack')}
           </h2>
           <p className="modal-subtitle">
             {needsConfirmation 
-              ? 'Enter the confirmation code we sent you'
-              : isSignUp ? 'Start your FAFSA journey' : 'Sign in to save progress'}
+              ? t('enterConfirmationCode')
+              : isSignUp ? t('startJourney') : t('signInToSave')}
           </p>
         </div>
 
@@ -130,11 +132,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
         {needsConfirmation ? (
           <form onSubmit={handleConfirmSignUp}>
             <div className="form-group">
-              <label className="form-label">Confirmation Code</label>
+              <label className="form-label">{t('confirmationCode')}</label>
               <input
                 type="text"
                 className="form-input"
-                placeholder="Enter 6-digit code"
+                placeholder={t('enterSixDigitCode')}
                 value={confirmationCode}
                 onChange={(e) => setConfirmationCode(e.target.value)}
                 required
@@ -142,18 +144,18 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
             </div>
 
             <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Confirming...' : 'Confirm & Sign In'}
+              {loading ? t('confirming') : t('confirmAndSignIn')}
             </button>
           </form>
         ) : (
           <form onSubmit={isSignUp ? handleSignUp : handleSignIn}>
             {isSignUp && (
               <div className="form-group">
-                <label className="form-label">Your Name</label>
+                <label className="form-label">{t('yourName')}</label>
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="Enter your name"
+                  placeholder={t('enterYourName')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -162,7 +164,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
             )}
 
             <div className="form-group">
-              <label className="form-label">Email Address</label>
+              <label className="form-label">{t('emailAddress')}</label>
               <input
                 type="email"
                 className="form-input"
@@ -174,7 +176,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
             </div>
 
             <div className="form-group">
-              <label className="form-label">Password</label>
+              <label className="form-label">{t('password')}</label>
               <input
                 type="password"
                 className="form-input"
@@ -187,7 +189,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
             </div>
 
             <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
+              {loading ? t('pleaseWait') : isSignUp ? t('createAccount') : t('signIn')}
             </button>
           </form>
         )}
@@ -196,18 +198,18 @@ const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSignIn }) 
           <>
             <div className="divider">
               <div className="divider-line" />
-              <span className="divider-text">or</span>
+              <span className="divider-text">{t('or')}</span>
               <div className="divider-line" />
             </div>
 
             <button className="guest-button" onClick={onClose}>
-              Continue as Guest
+              {t('continueAsGuest')}
             </button>
 
             <p className="switch-mode">
-              {isSignUp ? 'Have an account? ' : 'Need an account? '}
+              {isSignUp ? t('haveAccount') : t('needAccount')}
               <button className="switch-mode-link" onClick={() => setIsSignUp(!isSignUp)}>
-                {isSignUp ? 'Sign In' : 'Sign Up'}
+                {isSignUp ? t('signIn') : t('signUp')}
               </button>
             </p>
           </>

@@ -1156,6 +1156,7 @@ const EducateFirstAI: React.FC = () => {
             setIsGuest(false);
             setShowSignInModal(false);
           }}
+          t={t}
         />
 
         <ChatHistorySidebar
