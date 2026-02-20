@@ -871,3 +871,85 @@ html, body, #root {
     padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
 }
+/* Markdown Styling in Messages */
+.message-bubble.assistant ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.message-bubble.assistant li {
+  margin: 4px 0;
+}
+
+.message-bubble.assistant strong {
+  font-weight: 600;
+}
+
+.message-bubble.assistant p {
+  margin: 8px 0;
+}
+
+.message-bubble.assistant p:first-child {
+  margin-top: 0;
+}
+
+.message-bubble.assistant p:last-child {
+  margin-bottom: 0;
+}
+
+.message-bubble.assistant h1,
+.message-bubble.assistant h2,
+.message-bubble.assistant h3,
+.message-bubble.assistant h4,
+.message-bubble.assistant h5,
+.message-bubble.assistant h6 {
+  margin: 12px 0 8px 0;
+  font-weight: 600;
+}
+
+.message-bubble.assistant h1:first-child,
+.message-bubble.assistant h2:first-child,
+.message-bubble.assistant h3:first-child,
+.message-bubble.assistant h4:first-child,
+.message-bubble.assistant h5:first-child,
+.message-bubble.assistant h6:first-child {
+  margin-top: 0;
+}
+
+.message-bubble.assistant code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+}
+
+.message-bubble.assistant pre {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.message-bubble.assistant pre code {
+  background: none;
+  padding: 0;
+}
+
+.message-bubble.assistant blockquote {
+  border-left: 4px solid #10B981;
+  padding-left: 12px;
+  margin: 8px 0;
+  font-style: italic;
+}
+/* Left-align markdown content in messages */
+.message-bubble.assistant {
+  text-align: left;
+}
+
+.message-bubble.assistant ul,
+.message-bubble.assistant ol,
+.message-bubble.assistant p {
+  text-align: left;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getCurrentUser, signOut, fetchUserAttributes } from 'aws-amplify/auth';
+import ReactMarkdown from 'react-markdown';
 import SignInModal from './components/SignInModal';
 import DeadlineCountdown from './components/DeadlineCountdown';
 import DarkModeToggle from './components/DarkModeToggle';
@@ -1047,16 +1048,18 @@ const EducateFirstAI: React.FC = () => {
                     )}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: msg.type === 'assistant' ? 'flex-start' : 'flex-end' }}>
                       <div className={`message-bubble ${msg.type}`}>
-                        <p className="message-text">
+                        <div className="message-text">
                           {msg.type === 'assistant' && index === messages.length - 1 && typingMessageId !== null ? (
                             <TypingMessage 
                               content={msg.content} 
                               onComplete={() => setTypingMessageId(null)}
                             />
+                          ) : msg.type === 'assistant' ? (
+                            <ReactMarkdown>{msg.content}</ReactMarkdown>
                           ) : (
-                            msg.content
+                            <p>{msg.content}</p>
                           )}
-                        </p>
+                        </div>
                         <span className="message-time">{msg.time}</span>
                       </div>
                       {msg.type === 'assistant' && (

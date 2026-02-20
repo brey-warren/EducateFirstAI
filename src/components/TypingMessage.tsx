@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface TypingMessageProps {
   content: string;
@@ -35,7 +36,7 @@ const TypingMessage: React.FC<TypingMessageProps> = ({
 
   return (
     <span>
-      {displayedText}
+      <ReactMarkdown>{displayedText}</ReactMarkdown>
       {!isComplete && <span style={styles.cursor}>|</span>}
     </span>
   );
