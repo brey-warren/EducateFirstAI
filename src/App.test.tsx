@@ -1,18 +1,34 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import App from './App';
+import { ThemeProvider } from './context/ThemeContext';
+
+// Test wrapper with ThemeProvider
+const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <ThemeProvider>
+    {children}
+  </ThemeProvider>
+);
 
 describe('App', () => {
-  it('renders FAFSA Assistant heading', () => {
-    render(<App />);
-    // Look for the visible heading in the chat interface
-    const heading = screen.getByRole('heading', { name: 'FAFSA Assistant', level: 2 });
-    expect(heading).toBeInTheDocument();
+  it('renders EducateFirstAI brand name', () => {
+    render(
+      <TestWrapper>
+        <App />
+      </TestWrapper>
+    );
+    // Look for the brand name in the landing screen
+    const brandName = screen.getByText('EducateFirstAI');
+    expect(brandName).toBeInTheDocument();
   });
 
-  it('renders FAFSA assistance message', () => {
-    render(<App />);
-    const message = screen.getByText(/hi there! i'm here to help you with fafsa questions/i);
+  it('renders welcome message', () => {
+    render(
+      <TestWrapper>
+        <App />
+      </TestWrapper>
+    );
+    const message = screen.getByText(/your friendly fafsa guide/i);
     expect(message).toBeInTheDocument();
   });
 });
